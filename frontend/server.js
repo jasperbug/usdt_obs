@@ -7,6 +7,11 @@ const PORT = 8080;
 // 靜態文件服務
 app.use(express.static(path.join(__dirname)));
 
+// OBS 覆層路由
+app.get('/obs', (req, res) => {
+    res.sendFile(path.join(__dirname, 'obs-overlay.html'));
+});
+
 // 單頁應用路由
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));

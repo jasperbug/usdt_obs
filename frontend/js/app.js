@@ -78,6 +78,9 @@ class DonationApp {
             });
 
             this.socket.on('donation', (data) => {
+                // 顯示 OBS 通知
+                this.showOBSNotification(data);
+                
                 if (this.currentDonation && data.id === this.currentDonation.id) {
                     this.handleDonationConfirmed(data);
                 }
@@ -413,6 +416,77 @@ class DonationApp {
     showError(message) {
         // 簡單的錯誤顯示，您可以改為更好看的 modal 或 toast
         alert(message);
+    }
+
+    // 顯示 OBS 通知
+    showOBSNotification(data) {
+        console.log('🎉 顯示 OBS 通知:', data);
+        
+        // 移除現有通知
+        const existingNotification = document.querySelector('.obs-notification');
+        if (existingNotification) {
+            existingNotification.remove();
+        }
+        
+        // 創建通知元素
+        const notification = document.createElement('div');
+        notification.className = 'obs-notification';
+        
+        const nickname = data.nickname || '匿名';
+        const amount = typeof data.amount === 'number' ? data.amount.toFixed(6) : data.amount;
+        const message = data.message || '';
+        const method = data.method || 'USDT';
+        
+        notification.innerHTML = `
+            <div class="obs-notification-header">
+                <div class="obs-notification-icon">🎉</div>
+                <div class="obs-notification-title">收到抖內！</div>
+            </div>
+            <div class="obs-notification-content">
+                <div class="obs-notification-nickname">${nickname}</div>
+                <div class="obs-notification-amount">💰 ${amount} USDT</div>
+                ${message ? `<div class="obs-notification-message">"${message}"</div>` : ''}
+                <div class="obs-notification-method">透過 ${method}</div>
+            </div>
+        `;
+        
+        // 添加到頁面
+        document.body.appendChild(notification);
+        
+        // 顯示動畫
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+        
+        // 播放音效（如果有的話）
+        this.playNotificationSound();
+        
+        // 5秒後自動隱藏
+        setTimeout(() => {
+            notification.classList.remove('show');
+            notification.classList.add('hide');
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 500);
+        }, 5000);
+    }
+
+    // 播放通知音效
+    playNotificationSound() {
+        try {
+            // 創建音效（如果需要）
+            const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvGUrBSl+ze7NdygCCJfnmWPMriT4k8C6j2oNJCjJbS5yxBUwk8C6kHoOJChUw7+kCyjS8gVGFmtdZfJqSRdQM8Xm+g==');
+            audio.volume = 0.3;
+            audio.play().catch(() => {
+                // 忽略音效播放失敗
+                console.log('音效播放被瀏覽器阻擋（正常現象）');
+            });
+        } catch (error) {
+            // 忽略音效相關錯誤
+        }
     }
 }
 

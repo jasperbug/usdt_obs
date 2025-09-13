@@ -20,6 +20,133 @@
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+/* OBS 通知樣式 */
+.obs-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--success-color), #00ff7f);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--border-radius);
+    padding: 20px 25px;
+    min-width: 400px;
+    max-width: 500px;
+    box-shadow: var(--shadow-hover);
+    backdrop-filter: blur(10px);
+    transform: translateX(520px);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+    font-family: var(--font-family);
+}
+
+.obs-notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.obs-notification.hide {
+    transform: translateX(520px);
+    opacity: 0;
+}
+
+.obs-notification-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.obs-notification-icon {
+    font-size: 28px;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.obs-notification-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.obs-notification-content {
+    color: #ffffff;
+    line-height: 1.5;
+}
+
+.obs-notification-nickname {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.obs-notification-amount {
+    font-size: 24px;
+    font-weight: 800;
+    color: #ffff00;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 8px;
+}
+
+.obs-notification-message {
+    font-size: 14px;
+    opacity: 0.95;
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.obs-notification-method {
+    font-size: 12px;
+    opacity: 0.8;
+    text-align: right;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+@keyframes obsSlideIn {
+    0% {
+        transform: translateX(520px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes obsSlideOut {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(520px);
+        opacity: 0;
+    }
+}
+
+@keyframes obsPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.obs-notification.animate-in {
+    animation: obsSlideIn 0.5s ease-out forwards;
+}
+
+.obs-notification.animate-out {
+    animation: obsSlideOut 0.5s ease-in forwards;
+}
+
 /* Reset & Base Styles */
 * {
     margin: 0;
