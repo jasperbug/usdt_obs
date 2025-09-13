@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USDT 抖內系統 - 支持你的實況主</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="background-animation"></div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-coins"></i>
+                <span>USDT 抖內</span>
+            </div>
+            <div class="header-info">
+                <span class="status-indicator" id="connectionStatus">
+                    <i class="fas fa-circle"></i>
+                    連接中...
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <div class="container">
+            
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step active" data-step="1">
+                    <span class="step-number">1</span>
+                    <span class="step-label">填寫資訊</span>
+                </div>
+                <div class="step" data-step="2">
+                    <span class="step-number">2</span>
+                    <span class="step-label">選擇付款</span>
+                </div>
+                <div class="step" data-step="3">
+                    <span class="step-number">3</span>
+                    <span class="step-label">完成付款</span>
+                </div>
+            </div>
+
+            <!-- Donation Form -->
+            <div class="donation-card" id="donationForm">
+                <div class="card-header">
+                    <h1 class="card-title">
+                        <i class="fas fa-heart"></i>
+                        支持你的實況主
+                    </h1>
+                    <p class="card-subtitle">安全快速的 USDT 抖內系統</p>
+                </div>
+
+                <form id="donationFormElement" class="donation-form">
+                    <!-- Amount Input -->
+                    <div class="form-group">
+                        <label for="amount" class="form-label">
+                            <i class="fas fa-dollar-sign"></i>
+                            抖內金額 (USDT)
+                        </label>
+                        <div class="amount-input-group">
+                            <input type="number" 
+                                   id="amount" 
+                                   name="amount" 
+                                   class="form-input amount-input" 
+                                   placeholder="輸入金額"
+                                   min="0.01" 
+                                   step="0.01" 
+                                   required>
+                            <div class="quick-amounts">
+                                <button type="button" class="quick-amount" data-amount="1">1</button>
+                                <button type="button" class="quick-amount" data-amount="5">5</button>
+                                <button type="button" class="quick-amount" data-amount="10">10</button>
+                                <button type="button" class="quick-amount" data-amount="50">50</button>
+                                <button type="button" class="quick-amount" data-amount="100">100</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nickname Input -->
+                    <div class="form-group">
+                        <label for="nickname" class="form-label">
+                            <i class="fas fa-user"></i>
+                            你的暱稱
+                            <span class="optional">(選填)</span>
+                        </label>
+                        <input type="text" 
+                               id="nickname" 
+                               name="nickname" 
+                               class="form-input" 
+                               placeholder="輸入你的暱稱 (留空顯示為匿名)"
+                               maxlength="100">
+                    </div>
+
+                    <!-- Message Input -->
+                    <div class="form-group">
+                        <label for="message" class="form-label">
+                            <i class="fas fa-message"></i>
+                            留言訊息
+                            <span class="optional">(選填)</span>
+                        </label>
+                        <textarea id="message" 
+                                  name="message" 
+                                  class="form-input form-textarea" 
+                                  placeholder="想對實況主說些什麼嗎？"
+                                  maxlength="500"
+                                  rows="3"></textarea>
+                        <div class="character-count">
+                            <span id="messageCount">0</span>/500
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Selection -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-credit-card"></i>
+                            付款方式
+                        </label>
+                        <div class="payment-methods">
+                            <div class="payment-method active" data-method="BEP20">
+                                <div class="payment-method-icon">
+                                    <i class="fab fa-btc"></i>
+                                </div>
+                                <div class="payment-method-info">
+                                    <h3>BSC 鏈上轉帳 (BEP-20)</h3>
+                                    <p>最低 1 USDT・需精確尾數・入塊即播報・六位小數識別</p>
+                                    <span class="recommended">唯一選項</span>
+                                </div>
+                                <div class="payment-method-check">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <i class="fas fa-heart"></i>
+                        <span>送出抖內</span>
+                        <div class="btn-loader" id="btnLoader">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Payment Instructions -->
+            <div class="donation-card payment-card hidden" id="paymentInstructions">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-qrcode"></i>
+                        完成付款
+                    </h2>
+                    <div class="donation-summary" id="donationSummary"></div>
+                </div>
+
+                <div class="payment-content">
+                    <!-- Payment Info -->
+                    <div class="payment-info" id="paymentInfo"></div>
+                    
+                    <!-- Status -->
+                    <div class="status-section">
+                        <div class="status-indicator-large" id="paymentStatus">
+                            <div class="status-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="status-text">
+                                <h3>等待付款中...</h3>
+                                <p id="statusMessage">請按照上方指示完成付款</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="payment-actions">
+                        <button type="button" class="action-btn secondary" id="backBtn">
+                            <i class="fas fa-arrow-left"></i>
+                            返回修改
+                        </button>
+                        <button type="button" class="action-btn primary" id="refreshBtn">
+                            <i class="fas fa-refresh"></i>
+                            重新整理狀態
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="donation-card success-card hidden" id="successMessage">
+                <div class="success-content">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2>抖內成功！</h2>
+                    <p>感謝你的支持，你的抖內已經送達！</p>
+                    <button type="button" class="action-btn primary" id="newDonationBtn">
+                        再次抖內
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 USDT 抖內系統 - 安全・快速・可靠</p>
+                <div class="footer-links">
+                    <span class="footer-link">
+                        <i class="fas fa-shield-alt"></i>
+                        安全保護
+                    </span>
+                    <span class="footer-link">
+                        <i class="fas fa-clock"></i>
+                        即時處理
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
